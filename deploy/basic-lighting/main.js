@@ -1,12 +1,13 @@
 (function(timrwood){
     // globals and constants
     var radius = 20,
-        padding = 5,
+        padding = 2,
+        street = 15,
         rotation = 0,
         uniforms = {
             lightPosition : {
                 type : 'v3',
-                value : new THREE.Vector3(100, 100, 100)
+                value : new THREE.Vector3(100, 75, 50)
             }
         },
         time = Date.now();
@@ -19,17 +20,25 @@
     });
 
     // plane
-    var mesh = new THREE.PlaneGeometry(1000, 1000, 20, 20);
+    var mesh = new THREE.PlaneGeometry(2000, 2000, 20, 20);
     var plane = new THREE.Mesh(mesh, sphereMaterial);
     plane.rotation.x = -Math.PI / 2;
     timrwood.scene.add(plane);
 
+    var x = -250,
+        z = -250;
+
     for (var i = -10; i < 11; i++) {
+        var posx = (i % 3 === 0) ? (radius + street) : (radius + padding);
+        z = -250;
+        x += posx;
         for (var j = -10; j < 11; j++) {
             var height = radius + (radius * Math.random());
             var mesh = new THREE.CubeGeometry(radius, height, radius);
             var cube = new THREE.Mesh(mesh, sphereMaterial);
-            cube.position = new THREE.Vector3(i * (radius + padding), height / 2, j * (radius + padding));
+            var posz = (j % 3 === 0) ? (radius + street) : (radius + padding);
+            cube.position = new THREE.Vector3(x, height / 2, z + posz);
+            z += posz;
             timrwood.scene.add(cube);
         }
     }
@@ -46,11 +55,6 @@
         timrwood.camera.position.x = 200 * Math.sin(rotation / 4);
         timrwood.camera.position.y = 100 + 25 * Math.cos(rotation);
         timrwood.camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-        // change uniforms
-        uniforms.lightPosition.value.x = 50 * Math.cos(rotation / 3);
-        uniforms.lightPosition.value.y = 50 - 25 * Math.cos(rotation);;
-        uniforms.lightPosition.value.z = 50 * Math.sin(rotation / 3);
 
         // render
         timrwood.renderer.render(timrwood.scene, timrwood.camera);
