@@ -1,13 +1,13 @@
 (function(){
     // set the scene size
-    var WIDTH = 600,
-        HEIGHT = 400;
+    var WIDTH = $(window).width(),
+        HEIGHT = $(window).height();
 
     // set some camera attributes
     var VIEW_ANGLE = 45,
         ASPECT = WIDTH / HEIGHT,
         NEAR = 0.1,
-        FAR = 500;
+        FAR = 1000;
 
     // get the DOM element to attach to
     // - assume we've got jQuery to hand
